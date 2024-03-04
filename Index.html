@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join the Game</title>
+</head>
+<body>
+    <h1>Join the Game (Access Code Required)</h1>
+    <p><b>Access Code:</b> <span id="accessCode"></span></p>
+    <p><b>Joined Players:</b></p>
+    <ul id="playerList"></ul>
+    <p>Click <a href="http://yourdns.com" target="_blank">here</a> to join the game.</p>
+
+    <script>
+        document.getElementById('accessCode').innerText = localStorage.getItem('accessCode');
+
+        function joinGame() {
+            const playerName = document.getElementById('playerName').value;
+            const accessCode = document.getElementById('accessCodeInput').value;
+
+            fetch('http://yourdns.com:8000', {
+                method: 'POST',
+                body: accessCode,
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Server response:', data);
+                if (data === 'Welcome to the game!') {
+                    alert('Successfully joined the game as ' + playerName);
+                } else {
+                    alert('Invalid access code!');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
